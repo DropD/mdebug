@@ -3,5 +3,7 @@ import os
 
 DBG = mdebug()
 
-DBG(os.path.split('a/b.c'))
+my_path = 'a/b.c'
+
+DBG(os.path.split(my_path))
 print('a')

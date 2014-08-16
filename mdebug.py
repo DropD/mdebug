@@ -5,15 +5,6 @@ from importlib import import_module
 class mdebug(object):
 
     class visitor(ast.NodeVisitor):
-        #~ def visit_Import(self, node):
-            #~ for n in node.names:
-                #~ thisfilename = os.path.splitext(os.path.basename(__file__))[0]
-                #~ if not n.name == thisfilename:
-                    #~ globals()[n.name] = import_module(n.name)
-                    #~ if n.asname:
-                        #~ globals()[n.asname] = globals()[n.name]
-            #~ super(import_visitor, self).generic_visit(node)
-
         def visit_Assign(self, node):
             if hasattr(node.value, 'func'):
                 fn = node.value.func.id
@@ -32,12 +23,8 @@ class mdebug(object):
                 if fn == 'mdebug':
                     printnode = ast.Pass()
                     return ast.copy_location(printnode, node)
-                else:
-                    super(mdebug.visitor, self).generic_visit(node)
-                    return node
-            else:
-                super(mdebug.visitor, self).generic_visit(node)
-                return node
+            super(mdebug.transformer, self).generic_visit(node)
+            return node
 
         def visit_Expr(self, node):
             if hasattr(node.value, 'func'):

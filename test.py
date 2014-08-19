@@ -19,6 +19,10 @@ class xy(object):
     @property
     def y(self):
         return self._y
+    @classmethod
+    def test_method(cls):
+        DBG(cls(2, 5))
+        pass
 
 a = xy(1, 1)
 b = xy(2, 3)

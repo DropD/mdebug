@@ -24,8 +24,11 @@ class mdebug(object):
             if hasattr(node.value, 'func'):
                 fn = node.value.func.id
                 if fn == 'mdebug':
-                    printnode = ast.Pass()
-                    return ast.copy_location(printnode, node)
+                    name_to_main = ast.Assign(
+                        targets = [ast.Name(id = '__name__', ctx = ast.Store())],
+                        value = ast.Str(s = '__main__')
+                    )
+                    return ast.fix_missing_locations(ast.copy_location(name_to_main, node))
             super(mdebug.transformer, self).generic_visit(node)
             return node
 
@@ -84,18 +87,21 @@ class mdebug(object):
     def __init__(self):
         import __main__ as main
         import sys
-        self._filename = main.__file__
-        self._visitor = mdebug.visitor()
-        with open(self._filename) as f:
-            tree = ast.parse(f.read(), self._filename, 'exec')
-            self._visitor.visit(tree)
-            if self._visitor.funcname != None:
-                print 'mdebug: debugging {0}'.format(self._filename)
-                self._transformer = mdebug.transformer(self._visitor.funcname)
-                self._transformer.visit(tree)
-                cobj = compile(tree, self._filename, 'exec')
-                exec(cobj)
-                sys.exit()
+        import traceback
+        self._filename = traceback.extract_stack()[-2][0]
+        #~ self._filename = main.__file__
+        if self._filename == main.__file__:
+            self._visitor = mdebug.visitor()
+            with open(self._filename) as f:
+                tree = ast.parse(f.read(), self._filename, 'exec')
+                self._visitor.visit(tree)
+                if self._visitor.funcname != None:
+                    print 'mdebug: debugging {0}'.format(self._filename)
+                    self._transformer = mdebug.transformer(self._visitor.funcname)
+                    self._transformer.visit(tree)
+                    cobj = compile(tree, self._filename, 'exec')
+                    exec(cobj)
+                    sys.exit()
 
     def __call__(self, expr):
         pass

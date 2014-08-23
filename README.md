@@ -2,8 +2,11 @@
 
 This is a python utility module for expression debugging designed to be similar in use to C/C++ expression debugging macros.
 
-It allows you to define a function to which you can give an arbitraty python expression, this expression will be printed at runtime together with the result of the expression.
-The expression does not have to be escaped with quotes.
+It allows the user to define a function which takes an arbitrary expression to be printed with it's result and additional information.
+
+## Specialities
+ * it is not necessary to wrap expressions in quotes.
+ * the expression is executed in the context the debug function is called from, no eval calls are used.
 
 ## Usage Example:
 
@@ -27,13 +30,11 @@ mdebug: 1 + 1 evaluates to 2
 < your code 2 output >
 ```
 
+## How does it work?
+mdebug uses the `traceback` module to get info about the source code calling the debug function.
+
+This information is used to format and print the debug message
+
 ## Issues:
 
-At the moment mdebug has to be importet and used as
-
-```python
-from mdebug import mdebug
-<yourname> = mdebug()
-```
-
-instanciating with the qualified name does not work yet.
+No known issues.

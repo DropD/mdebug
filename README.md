@@ -7,6 +7,9 @@ It allows the user to define a function which takes an arbitrary expression to b
 ## Specialities
  * it is not necessary to wrap expressions in quotes.
  * the expression is executed in the context the debug function is called from, no eval calls are used.
+ * easy to read and understand due to comments and small codebase.
+ * customizable output through subclassing and overriding hooks.
+ * customizable analysis by passing a separate analyzer object.
 
 ## Usage Example:
 

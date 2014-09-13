@@ -1,5 +1,5 @@
-import mdebug
-DBG = mdebug.mdebug()
+import mdebug, analyzer
+DBG = mdebug.mdebug(analyzer = analyzer.name_analyzer())
 
 DBG('hello {}'.format("world"))
 

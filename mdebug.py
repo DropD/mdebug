@@ -1,4 +1,5 @@
 import traceback, re, os
+from analyzer import analyzer_interface
 '''
 Debugging utility module.
 
@@ -17,7 +18,7 @@ interfaces:
             * display_analysis(self)
 '''
 
-class no_analyzer(object):
+class no_analyzer(analyzer_interface):
     '''
     Minimal implementation of the analyzer interface. Performs no analysis.
     '''
